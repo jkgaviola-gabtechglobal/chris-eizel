@@ -15,9 +15,9 @@ export default function Hero() {
       {/* Header / Nav */}
       <header className="flex items-center justify-between py-2 md:py-6">
         {/* Logo: inline on mobile/tablet, absolute on desktop */}
-        <div className="xl:absolute xl:-top-32 xl:left-16 shrink-0">
+        <div className="xl:absolute xl:top-12 xl:left-16 shrink-0">
           <Image
-            src="/Final-Logo-Landscape.png"
+            src="/Final-Logo-Cropped.png"
             alt="Chris & Eizel Foundation"
             width={520}
             height={320}

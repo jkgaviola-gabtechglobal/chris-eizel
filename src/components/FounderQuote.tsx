@@ -4,11 +4,11 @@ import { FaQuoteLeft } from "react-icons/fa";
 export default function FounderQuote() {
   return (
     <section className="bg-slate-100 py-20 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-10 lg:gap-12">
         {/* Text side */}
-        <div className="w-full max-w-2xl shrink-0">
-          <FaQuoteLeft className="w-16 h-16 mb-6" style={{ color: "#39aecd" }} />
-          <p className="text-gray-700 text-2xl leading-relaxed mb-6">
+        <div className="w-full md:max-w-xl lg:max-w-2xl shrink-0">
+          <FaQuoteLeft className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 mb-4 md:mb-5 lg:mb-6" style={{ color: "#39aecd" }} />
+          <p className="text-gray-700 text-lg sm:text-xl md:text-lg lg:text-2xl leading-relaxed mb-4 md:mb-5 lg:mb-6">
             My parents&apos; business went bankrupt when I was in my first year of
             college. I had to sell whatever I could just to afford transportation
             and food to get to my university back in the Philippines. Thankfully,
@@ -16,7 +16,7 @@ export default function FounderQuote() {
             If not for my Lolo Fidel, I wouldn&apos;t have been able to establish a
             career and, later on, my own staffing business.
           </p>
-          <p className="font-bold text-xl leading-relaxed mb-8" style={{ color: "#39aecd" }}>
+          <p className="font-bold text-base sm:text-lg md:text-base lg:text-xl leading-relaxed mb-6 md:mb-6 lg:mb-8" style={{ color: "#39aecd" }}>
             I want to be my Lolo Fidel to the youth of today on a global scale,
             starting in the US and in the Philippines.
           </p>
@@ -29,7 +29,7 @@ export default function FounderQuote() {
         </div>
 
         {/* Photo side */}
-        <div className="relative w-120 h-140 shrink-0 ml-auto self-end translate-y-20" style={{ WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 2%, black 97%, transparent 100%)", maskImage: "linear-gradient(to right, transparent 0%, black 2%, black 97%, transparent 100%)" }}>
+        <div className="relative w-64 h-80 sm:w-80 sm:h-96 md:w-72 md:h-96 lg:w-120 lg:h-140 shrink-0 mx-auto md:ml-auto md:self-end md:translate-y-16 lg:translate-y-20" style={{ WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 2%, black 97%, transparent 100%)", maskImage: "linear-gradient(to right, transparent 0%, black 2%, black 97%, transparent 100%)" }}>
           <Image
             src="/CY_Headshot2.png"
             alt="Chris Yap - Founder and President of Chris & Eizel Foundation"
