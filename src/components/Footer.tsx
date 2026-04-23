@@ -36,9 +36,9 @@ export default function Footer() {
 
         {/* Privacy Policy */}
         <div className="shrink-0 text-sm">
-          <a href="/privacy-policy" className="text-gray-600 hover:text-[#2AACE2] transition-colors">
+          <span className="text-gray-600 cursor-default">
             Privacy Policy
-          </a>
+          </span>
         </div>
       </motion.div>
     </footer>

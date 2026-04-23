@@ -120,8 +120,8 @@ export default function Hero() {
             width={520}
             height={320}
             priority
-            className="w-44 sm:w-56 md:w-72 xl:w-130 h-auto"
-            style={{ height: "auto", width: "auto" }}
+            className="w-36 sm:w-44 md:w-56 xl:w-130 h-auto"
+            style={{ height: "auto" }}
           />
         </motion.div>
 
@@ -131,11 +131,11 @@ export default function Hero() {
             <motion.a
               key={link}
               href={`#${link.toLowerCase().replace(" ", "-")}`}
-              className="text-gray-600 font-medium hover:text-[#2AACE2] transition-colors"
+              className={`font-medium hover:text-[#2AACE2] transition-colors ${link === "Home" ? "text-[#2AACE2] underline underline-offset-4" : "text-gray-600"}`}
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
-              whileHover={{ y: -2 }}
+              transition={{ delay: 0.2 + i * 0.1, duration: 0.5, type: "tween" }}
+              whileHover={{ y: -2, transition: { duration: 0.15, ease: "easeOut", type: "tween" } }}
             >
               {link}
             </motion.a>
@@ -166,9 +166,21 @@ export default function Hero() {
             {navLinks.map((link) => (
               <a
                 key={link}
-                href={`#${link.toLowerCase().replace(" ", "-")}`}
-                onClick={() => setMenuOpen(false)}
-                className="text-gray-600 hover:text-[#2AACE2] transition-colors"
+                href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMenuOpen(false);
+                  const id = link.toLowerCase().replace(/\s+/g, "-");
+                  setTimeout(() => {
+                    if (link === "Home") {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    } else {
+                      const el = document.getElementById(id);
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }, 370);
+                }}
+                className={`hover:text-[#2AACE2] transition-colors ${link === "Home" ? "text-[#2AACE2] underline underline-offset-4" : "text-gray-600"}`}
               >
                 {link}
               </a>

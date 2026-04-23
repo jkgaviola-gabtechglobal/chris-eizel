@@ -4,6 +4,7 @@ import About from "@/components/About";
 import FounderQuote from "@/components/FounderQuote";
 import GetInvolved from "@/components/GetInvolved";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <About />
       <GetInvolved />
       <Footer />
+      <ScrollToTop />
     </main>
   );
 }
