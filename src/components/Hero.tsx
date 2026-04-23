@@ -1,11 +1,105 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { PiGraduationCap } from "react-icons/pi";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { LuUtensils } from "react-icons/lu";
 import { HiMenu, HiX } from "react-icons/hi";
+import {
+  motion,
+  useInView,
+  useMotionValue,
+  useSpring,
+  AnimatePresence,
+  type Variants,
+} from "framer-motion";
+
+// Animated count-up number
+function CountUp({ target, prefix = "", suffix = "" }: { target: number; prefix?: string; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const raw = useMotionValue(0);
+  const spring = useSpring(raw, { stiffness: 60, damping: 20 });
+
+  useEffect(() => {
+    if (inView) raw.set(target);
+  }, [inView, target, raw]);
+
+  useEffect(() => {
+    return spring.on("change", (v) => {
+      if (ref.current) {
+        const formatted = v >= 1000
+          ? Math.round(v).toLocaleString()
+          : Math.round(v).toString();
+        ref.current.textContent = `${prefix}${formatted}${suffix}`;
+      }
+    });
+  }, [spring, prefix, suffix]);
+
+  return <span ref={ref}>{prefix}0{suffix}</span>;
+}
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 32 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.15, duration: 0.65, ease: EASE },
+  }),
+};
+
+const slideInRight: Variants = {
+  hidden: { opacity: 0, x: 60 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.8, ease: EASE, delay: 0.3 },
+  },
+};
+
+const cardVariant: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.18, duration: 0.6, ease: EASE },
+  }),
+};
+
+const stats = [
+  {
+    icon: PiGraduationCap,
+    bg: "bg-[#E8F4FB]",
+    color: "text-[#2AACE2]",
+    label: "of scholarships funded",
+    value: 100000,
+    prefix: "$",
+    suffix: "",
+  },
+  {
+    icon: HiOutlineUserGroup,
+    bg: "bg-[#E8F8F2]",
+    color: "text-[#2ABE82]",
+    label: "online students served",
+    value: 900,
+    prefix: "",
+    suffix: "",
+  },
+  {
+    icon: LuUtensils,
+    bg: "bg-[#FEF3EC]",
+    color: "text-[#F5924E]",
+    label: "meals provided",
+    value: 3000,
+    prefix: "",
+    suffix: "",
+  },
+];
+
+const navLinks = ["Home", "About", "Get Involved"];
 
 export default function Hero() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -14,26 +108,41 @@ export default function Hero() {
     <section className="relative bg-white px-4 sm:px-6 xl:px-16">
       {/* Header / Nav */}
       <header className="flex items-center justify-between py-2 md:py-6">
-        {/* Logo: inline on mobile/tablet, absolute on desktop */}
-        <div className="xl:absolute xl:top-12 xl:left-16 shrink-0">
+        <motion.div
+          className="xl:absolute xl:top-12 xl:left-16 shrink-0"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
           <Image
             src="/Final-Logo-Cropped.png"
             alt="Chris & Eizel Foundation"
             width={520}
             height={320}
             priority
-            className="w-44 sm:w-56 md:w-72 xl:w-130 h-auto" style={{ height: "auto" }}
+            className="w-44 sm:w-56 md:w-72 xl:w-130 h-auto"
+            style={{ height: "auto", width: "auto" }}
           />
-        </div>
+        </motion.div>
 
-        {/* Desktop Nav — visible from md (768px) where logo + nav fit side by side */}
+        {/* Desktop Nav */}
         <nav className="ml-auto xl:mt-18 xl:mr-60 hidden md:flex items-center gap-8 xl:gap-20 text-sm lg:text-base xl:text-xl">
-          <a href="#home" className="text-gray-600 font-medium hover:text-[#2AACE2] transition-colors">Home</a>
-          <a href="#about" className="text-gray-600 font-medium hover:text-[#2AACE2] transition-colors">About</a>
-          <a href="#get-involved" className="text-gray-600 font-medium hover:text-[#2AACE2] transition-colors whitespace-nowrap">Get Involved</a>
+          {navLinks.map((link, i) => (
+            <motion.a
+              key={link}
+              href={`#${link.toLowerCase().replace(" ", "-")}`}
+              className="text-gray-600 font-medium hover:text-[#2AACE2] transition-colors"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
+              whileHover={{ y: -2 }}
+            >
+              {link}
+            </motion.a>
+          ))}
         </nav>
 
-        {/* Hamburger button — only on small screens below md */}
+        {/* Hamburger */}
         <button
           type="button"
           className="ml-auto md:hidden text-gray-600 hover:text-[#2AACE2] transition-colors"
@@ -45,46 +154,104 @@ export default function Hero() {
       </header>
 
       {/* Mobile Nav Drawer */}
-      {menuOpen && (
-        <nav className="md:hidden flex flex-col gap-4 pb-6 text-base font-medium">
-          <a href="#home" onClick={() => setMenuOpen(false)} className="text-gray-600 hover:text-[#2AACE2] transition-colors">Home</a>
-          <a href="#about" onClick={() => setMenuOpen(false)} className="text-gray-600 hover:text-[#2AACE2] transition-colors">About</a>
-          <a href="#get-involved" onClick={() => setMenuOpen(false)} className="text-gray-600 hover:text-[#2AACE2] transition-colors">Get Involved</a>
-        </nav>
-      )}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav
+            className="md:hidden flex flex-col gap-4 pb-6 text-base font-medium overflow-hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link}
+                href={`#${link.toLowerCase().replace(" ", "-")}`}
+                onClick={() => setMenuOpen(false)}
+                className="text-gray-600 hover:text-[#2AACE2] transition-colors"
+              >
+                {link}
+              </a>
+            ))}
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
       {/* Hero Content */}
       <div className="max-w-7xl mx-auto flex flex-col-reverse xl:flex-row items-center gap-4 md:gap-8 xl:gap-10 pt-0 pb-6 md:pb-10">
         {/* Left: Text */}
         <div className="w-full xl:flex-1 flex flex-col gap-4 md:gap-6 mt-0 xl:mt-20 ml-0 xl:ml-10 text-center xl:text-left items-center xl:items-start">
-          <h1 className="text-2xl sm:text-3xl xl:text-4xl font-bold leading-tight text-gray-900">
+          <motion.h1
+            className="text-2xl sm:text-3xl xl:text-4xl font-bold leading-tight text-gray-900"
+            custom={0}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+          >
             Education is the catapult
             <br />
-            <span className="text-[#2AACE2]">to elevate our quality of life.</span>
-          </h1>
-          <p className="text-gray-500 text-sm sm:text-base xl:text-lg max-w-lg">
+            <motion.span
+              className="text-[#2AACE2] inline-block"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            >
+              to elevate our quality of life.
+            </motion.span>
+          </motion.h1>
+
+          <motion.p
+            className="text-gray-500 text-sm sm:text-base xl:text-lg max-w-lg"
+            custom={1}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+          >
             The Chris &amp; Eizel Foundation supports youth through online education,
             training, mentoring, and practical pathways to a better future.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <a
+          </motion.p>
+
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+            custom={2}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.a
               href="#donate"
               className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-[#1B3A6B] text-white font-semibold text-base hover:bg-[#15305a] transition-colors"
+              whileHover={{ scale: 1.05, boxShadow: "0 8px 24px rgba(27,58,107,0.35)" }}
+              whileTap={{ scale: 0.97 }}
             >
               Donate
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="#partner"
               className="inline-flex items-center justify-center px-8 py-3 rounded-full border-2 border-[#2AACE2] text-[#2AACE2] font-semibold text-base hover:bg-[#2AACE2]/10 transition-colors"
+              whileHover={{ scale: 1.05, boxShadow: "0 8px 24px rgba(42,172,226,0.25)" }}
+              whileTap={{ scale: 0.97 }}
             >
               Partner with us
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
         </div>
 
         {/* Right: Image */}
-        <div className="w-full xl:flex-1 flex justify-center xl:justify-end xl:mr-20">
-          <div className="relative w-full max-w-sm sm:max-w-lg xl:max-w-2xl h-64 sm:h-80 xl:h-96 overflow-hidden mask-[linear-gradient(to_bottom,transparent_0%,black_15%,black_100%),linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%)]" style={{maskComposite:'intersect'}}>
+        <motion.div
+          className="w-full xl:flex-1 flex justify-center xl:justify-end xl:mr-20"
+          variants={slideInRight}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.div
+            className="relative w-full max-w-sm sm:max-w-lg xl:max-w-2xl h-64 sm:h-80 xl:h-96 overflow-hidden"
+            style={{
+              maskImage:
+                "linear-gradient(to bottom, transparent 0%, black 15%, black 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
+              maskComposite: "intersect",
+            }}
+          >
             <Image
               src="/Image.png"
               alt="Chris and Eizel Foundation"
@@ -93,44 +260,38 @@ export default function Hero() {
               className="object-cover"
               priority
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Stats Row */}
       <div className="max-w-6xl mx-auto pb-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="flex items-center gap-4 border border-gray-400 rounded-3xl px-6 py-5">
-          <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 xl:w-24 xl:h-24 rounded-full bg-[#E8F4FB] flex items-center justify-center">
-            <PiGraduationCap className="w-10 h-10 sm:w-12 sm:h-12 xl:w-16 xl:h-16 text-[#2AACE2]" />
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Over</p>
-            <p className="text-2xl font-bold text-[#2AACE2]">$100,000</p>
-            <p className="text-sm text-gray-600">of scholarships funded</p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 border border-gray-400 rounded-3xl px-6 py-5">
-          <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 xl:w-24 xl:h-24 rounded-full bg-[#E8F8F2] flex items-center justify-center">
-            <HiOutlineUserGroup className="w-10 h-10 sm:w-12 sm:h-12 xl:w-16 xl:h-16 text-[#2ABE82]" />
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Over</p>
-            <p className="text-2xl font-bold text-[#2ABE82]">900</p>
-            <p className="text-sm text-gray-600">online students served</p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 border border-gray-400 rounded-3xl px-6 py-5">
-          <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 xl:w-24 xl:h-24 rounded-full bg-[#FEF3EC] flex items-center justify-center">
-            <LuUtensils className="w-10 h-10 sm:w-12 sm:h-12 xl:w-16 xl:h-16 text-[#F5924E]" />
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Over</p>
-            <p className="text-2xl font-bold text-[#F5924E]">3,000</p>
-            <p className="text-sm text-gray-600">meals provided</p>
-          </div>
-        </div>
+        {stats.map(({ icon: Icon, bg, color, label, value, prefix, suffix }, i) => (
+          <motion.div
+            key={label}
+            className="flex items-center gap-4 border border-gray-400 rounded-3xl px-6 py-5"
+            custom={i}
+            variants={cardVariant}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <div
+              className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 xl:w-24 xl:h-24 rounded-full ${bg} flex items-center justify-center`}
+            >
+              <Icon className={`w-10 h-10 sm:w-12 sm:h-12 xl:w-16 xl:h-16 ${color}`} />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Over</p>
+              <p className={`text-2xl font-bold ${color}`}>
+                <CountUp target={value} prefix={prefix} suffix={suffix} />
+              </p>
+              <p className="text-sm text-gray-600">{label}</p>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
