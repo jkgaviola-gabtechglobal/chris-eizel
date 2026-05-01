@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+
+const PayPalDonateButton = dynamic(() => import("./PayPalDonateButton"), { ssr: false });
 import { PiGraduationCap } from "react-icons/pi";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { LuUtensils } from "react-icons/lu";
@@ -230,14 +233,7 @@ export default function Hero() {
             initial="hidden"
             animate="show"
           >
-            <motion.a
-              href="#donate"
-              className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-[#1B3A6B] text-white font-semibold text-base hover:bg-[#15305a] transition-colors"
-              whileHover={{ scale: 1.05, boxShadow: "0 8px 24px rgba(27,58,107,0.35)" }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Donate
-            </motion.a>
+            <PayPalDonateButton />
             <motion.a
               href="#partner"
               className="inline-flex items-center justify-center px-8 py-3 rounded-full border-2 border-[#2AACE2] text-[#2AACE2] font-semibold text-base hover:bg-[#2AACE2]/10 transition-colors"

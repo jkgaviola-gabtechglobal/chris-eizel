@@ -11,6 +11,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Chris & Eizel Foundation",
   description: "Supporting youth through education, training, mentoring, and practical pathways to a better future.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
