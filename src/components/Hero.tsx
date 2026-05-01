@@ -235,7 +235,7 @@ export default function Hero() {
           >
             <PayPalDonateButton />
             <motion.a
-              href="#partner"
+              href="#get-involved"
               className="inline-flex items-center justify-center px-8 py-3 rounded-full border-2 border-[#2AACE2] text-[#2AACE2] font-semibold text-base hover:bg-[#2AACE2]/10 transition-colors"
               whileHover={{ scale: 1.05, boxShadow: "0 8px 24px rgba(42,172,226,0.25)" }}
               whileTap={{ scale: 0.97 }}
