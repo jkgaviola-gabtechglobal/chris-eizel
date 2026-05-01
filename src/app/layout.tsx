@@ -15,6 +15,18 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.png",
   },
+  openGraph: {
+    title: "Chris & Eizel Foundation",
+    description: "Supporting youth through education, training, mentoring, and practical pathways to a better future.",
+    url: "https://chrisandeizelfoundation.com",
+    siteName: "Chris & Eizel Foundation",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Chris & Eizel Foundation",
+    description: "Supporting youth through education, training, mentoring, and practical pathways to a better future.",
+  },
 };
 
 export default function RootLayout({
