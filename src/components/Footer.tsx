@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -36,9 +37,9 @@ export default function Footer() {
 
         {/* Privacy Policy */}
         <div className="shrink-0 text-sm">
-          <span className="text-gray-600 cursor-default">
+          <Link href="/privacy-policy" className="text-gray-600 hover:text-gray-900 transition-colors">
             Privacy Policy
-          </span>
+          </Link>
         </div>
       </motion.div>
     </footer>
