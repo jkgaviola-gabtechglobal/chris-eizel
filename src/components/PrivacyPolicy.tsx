@@ -66,7 +66,7 @@ const sections = [
     title: "9. Contact Us",
     content:
       "For questions or concerns about this Privacy Policy, please contact us at:",
-    bullets: ["rio@chrisandeizelfoundation.com", "[Foundation Office Address]"],
+    bullets: ["rio@chrisandeizelfoundation.com", "17505 N 79th Ave Suite 210 Glendale, AZ 85308"],
   },
 ];
 
